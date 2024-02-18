@@ -1,19 +1,17 @@
-import { Routing } from 'pages';
 import { withProviders } from './providers';
 import './index.scss'
 import HomePage from 'pages/home';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useRoute } from 'wouter';
 
 const App = () => {
+  const [, route] = useRoute('/:id')
+  const [, setLocation] = useLocation()
   return (
     <div className="app">
       <HomePage />
-      {!window.location.pathname.includes("projects") 
-      ? <a href="#" 
+      <a href="#" 
       style={{ position: 'absolute', top: 40, left: 40, fontSize: '16px' }} 
-      onClick={() => window.history.back()}>Back</a>
-      : <></>
-    }
+      onClick={() => setLocation('/')}> {route ? 'Back' : 'Double click to enter'}</a>
     </div>
   );
 }

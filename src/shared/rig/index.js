@@ -1,14 +1,14 @@
 import { CameraControls } from "@react-three/drei"
 import { useThree } from "@react-three/fiber"
 import { useEffect } from "react"
-import { useLocation } from "react-router"
+import { useRoute } from "wouter"
 import * as THREE from "three"
 
 const Rig = ({ position = new THREE.Vector3(0, 0, 2), focus = new THREE.Vector3(0, 0, 0) }) => {
     const { controls, scene } = useThree()
-    const location = useLocation();
+    const [, route] = useRoute('/:id');
     useEffect(() => {
-        const active = scene.getObjectByName(location?.pathname)
+        const active = scene.getObjectByName(route?.id)
         if (active) {
             active.parent.localToWorld(position.set(0, 0.5, 0.25))
             active.parent.localToWorld(focus.set(0, 0, -2))

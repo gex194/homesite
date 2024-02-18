@@ -1,22 +1,34 @@
-import { Environment, Gltf, OrbitControls, PerspectiveCamera } from "@react-three/drei";
+import { SpotLight, useDepthBuffer } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
-import PortalFrame from "shared/portal-frame";
+import AboutPage from "pages/about";
+import ProjectsPageList from "pages/projects-list";
+import MovingSpot from "shared/moving-spot";
 import Rig from "shared/rig";
 
+const Lightning = () => {
+    const depthBuffer = useDepthBuffer({ frames: 1 })
+
+    return (
+        <>
+            <MovingSpot depthBuffer={depthBuffer} color="#b00c3f" position={[0, 1.5, 0]} />
+        </>
+    )
+}
+
 const HomePage = () => {
+
     return (
         <div id="canvas-container">
-            <Canvas camera={{fov: 75, position: [50,50,50]}} eventPrefix="client">
-            <color attach="background" args={['#f0f0f0']} />
-            <directionalLight />
-                <PortalFrame id="/projects" name={`pro\njects`} author="-" bg="#ffffff" position={[-1.15, 0, 0]} rotation={[0, 0.5, 0]}>
-                    <Gltf src="pc/awakened_pc.glb" scale={0.001} position={[0, -0.7, -2]} />
-                </PortalFrame>
-                <PortalFrame id="/about" name={`about`} author="-" bg="#d3d3d3" position={[1.15, 0, 0]} rotation={[0, -0.5, 0]}>
-                    <Gltf src="pc/awakened_pc.glb" scale={0.001} position={[0, -2, -3]} />
-                </PortalFrame>
+            <Canvas shadows dpr={[1, 2]} camera={{ fov: 75, position: [50, 50, 50] }} eventPrefix="client">
+                <mesh position={[0, 10, -1]} receiveShadow>
+                    <planeGeometry args={[50, 50]} />
+                </mesh>
+                <color attach="background" args={['#202020']} />
+                <fog attach="fog" args={['#202020', 5, 20]} />
+                {/* <ambientLight intensity={0.015} /> */}
+                <ProjectsPageList />
+                <AboutPage />
                 <Rig />
-                <Environment files="https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/1k/blue_lagoon_night_1k.hdr" />
             </Canvas>
         </div>
 
